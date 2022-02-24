@@ -6,11 +6,7 @@ import '../widget/grid_item.dart';
 class CategoriesScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Daily Meal'),
-      ),
-      body: GridView(
+    return GridView(
         padding: const EdgeInsets.all(25),
         gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
           // * If deivce widith is 300 only 1 child wil be there in col, if device width 500 then 2
@@ -24,7 +20,6 @@ class CategoriesScreen extends StatelessWidget {
         children: DUMMY_CATEGORIES
             .map((catData) => CategoryItem(catData.id, catData.title, catData.color))
             .toList(),
-      ),
     );
   }
 }

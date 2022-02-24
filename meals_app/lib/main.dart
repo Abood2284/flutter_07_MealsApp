@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import './screens/tabs_screen.dart';
 import './screens/categories_screen.dart';
 import './screens/category_recipe_screen.dart';
 import './screens/meal_details_screen.dart';
@@ -33,7 +34,7 @@ class MyApp extends StatelessWidget {
       // initialRoute: '/', // default = '/'
       // * Routes to our app arug & non-arguments
       routes: {
-        '/': (ctx) => CategoriesScreen(),
+        '/': (ctx) => TabsScreen(),
         // PROBLEM
         //* In bigger apps if you make a typo error in passing the key properly you can get a
         // * error that will give a hard time catching it
