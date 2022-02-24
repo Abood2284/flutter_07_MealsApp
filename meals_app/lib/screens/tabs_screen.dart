@@ -2,29 +2,37 @@ import 'package:flutter/material.dart';
 
 import './favorites_screen.dart';
 import './categories_screen.dart';
+import '../widget/main_drawer.dart';
+import '../models/meal.dart';
 
 class TabsScreen extends StatefulWidget {
+  final List<Meal> favoriteMeals;
+
+  TabsScreen(this.favoriteMeals);
+
   @override
   _TabsScreenState createState() => _TabsScreenState();
 }
 
 class _TabsScreenState extends State<TabsScreen> {
-  // * Creating map so that we can dynamically use title key for that screen
-  final List<Map<String, Object>> _pages = [
+  late List<Map<String, Object>> _pages;
+  int _selectedPageIndex = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    _pages = [
     {
       'page': CategoriesScreen(),
       'title': 'Categories',
     },
     {
-      'page': FavoritesScreen(),
+      'page': FavoritesScreen(widget.favoriteMeals),
       'title': 'Your Favorite',
     },
   ];
-  // * Will hold the index of the currrent screen
-  int _selectedPageIndex = 0;
+  }
 
-// * Flutter will pass the index you dont need to pass it
-// * this index referes to the screen by default your page will be
   void _selectPage(int index) {
     setState(() {
       _selectedPageIndex = index;
@@ -33,27 +41,31 @@ class _TabsScreenState extends State<TabsScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return DefaultTabController(
-      length: 2,
-      child: Scaffold(
-        appBar: AppBar(
-          title: Text('Meals'),
-        ),
-        //For Having a bottom of scalfold tabs
-        bottomNavigationBar: TabBar(
-          tabs: <Widget>[
-            Tab(
-              icon: Icon(Icons.category),
-              text: 'Categories',
-            ),
-            Tab(
-              icon: Icon(Icons.favorite),
-              text: 'Favorites',
-            )
-          ],
-        ),
-        body: TabBarView(
-            children: <Widget>[CategoriesScreen(), FavoritesScreen()]),
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(_pages[_selectedPageIndex]['title'] as String),
+      ),
+      drawer: MainDrawer(),
+      body: _pages[_selectedPageIndex]['page'] as Widget,
+      bottomNavigationBar: BottomNavigationBar(
+        onTap: _selectPage,
+        backgroundColor: Theme.of(context).primaryColor,
+        unselectedItemColor: Colors.white,
+        selectedItemColor: Theme.of(context).accentColor,
+        currentIndex: _selectedPageIndex,
+        // type: BottomNavigationBarType.fixed,
+        items: [
+          BottomNavigationBarItem(
+            backgroundColor: Theme.of(context).primaryColor,
+            icon: Icon(Icons.category),
+            label: 'Categories',
+          ),
+          BottomNavigationBarItem(
+            backgroundColor: Theme.of(context).primaryColor,
+            icon: Icon(Icons.star),
+            label: 'Favorites',
+          ),
+        ],
       ),
     );
   }
